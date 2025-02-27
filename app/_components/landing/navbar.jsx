@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link"
+import Image from "next/image"
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
@@ -25,8 +26,15 @@ export default function Navbar() {
   return (
     <nav className="w-full bg-white border-b relative">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-red-600">
-          DataChat
+        <Link href="/" className="flex items-center gap-2">
+          <Image 
+            src="/Data_logo.jpeg"
+            alt="DataSensei Logo"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+          <span className="text-2xl font-bold text-red-600">DataSensei</span>
         </Link>
 
         {/* Mobile menu button */}
