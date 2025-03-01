@@ -6,8 +6,8 @@ import BarChart from '../charts/BarChart';
 import ScatterPlot from '../charts/ScatterPlot';
 
 export const VisualizationMessage = ({ response }) => {
-  // Expect consistent format
-  const { content, visualization } = response.data || response;
+
+  const { content, visualization } = response.data?.data || response.data || response;
 
   if (!content || !visualization) {
     console.error("Missing required visualization data");

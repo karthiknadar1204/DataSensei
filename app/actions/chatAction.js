@@ -75,7 +75,7 @@ async function saveChat(message, response, connectionId) {
   }
 }
 
-async function getPreviousChats(connectionId, limit = 5) {
+async function getPreviousChats(connectionId, limit = 10) {
   const user = await currentUser();
   if (!user) return [];
 

@@ -1,0 +1,207 @@
+first we fetch the schema and break it into chunks based on the number of tables.
+
+Here, tables contains an array of objects, where each object has a table_name property. For example:
+
+
+The chunkArray function splits this array into smaller chunks:
+
+akes each chunk of table names
+Processes them in parallel using Promise.all
+For each table in the chunk:
+Fetches column information
+Fetches table data
+Combines them into a structured object
+Adds the results to allTableData.
+
+so for a url,first allthe tables are fetched.
+if we have 8 tables and chunk size of 5,then each chunk formed will have 5 tables each and returned
+
+then in each chunk,we iterate over the tables,loop thrig them while parallely fetching the data of each table in rach chunk
+Taking an array and a chunk size as parameters
+Creating smaller arrays of the specified size
+For example, if CHUNK_SIZE = 5 and you have 12 tables:
+
+forchunking the table data
+export function chunkTableData(tableData) {
+  const CHUNK_SIZE = 4000; // Maximum size for each chunk
+  const chunks = [];
+  let currentChunk = [];
+  let currentSize = 0;
+  
+  // Helper to estimate the size of a row
+  const getRowSize = (row) => JSON.stringify(row).length;
+  
+  // Process table data row by row
+  for (const row of tableData) {
+    const rowSize = getRowSize(row);
+    
+    if (currentSize + rowSize > CHUNK_SIZE) {
+      // If adding this row would exceed chunk size:
+      if (currentChunk.length > 0) {
+        chunks.push(currentChunk);  // Save current chunk
+      }
+      currentChunk = [row];        // Start new chunk with current row
+      currentSize = rowSize;       // Reset size counter
+    } else {
+      // If row fits in current chunk:
+      currentChunk.push(row);      // Add row to chunk
+      currentSize += rowSize;      // Update size counter
+    }
+  }
+  
+  // Add any remaining data as final chunk
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk);
+  }
+  
+  return chunks;
+}
+
+
+
+
+
+
+
+
+
+
+What is yield?
+yield is like a "pause and return" statement in a generator function
+It allows the function to return a value and pause execution
+When called again, it continues from where it left off
+It's useful for handling large amounts of data without loading everything into memory at once
+
+Generator Function:
+The * makes this a generator function
+Generator functions can pause and resume their execution
+They use yield to return values one at a time
+They maintain their state between yields
+
+
+
+
+
+
+
+getRowSize doesn't count the number of rows. Instead, it calculates the size (in bytes) of a single row when converted to a string
+
+
+
+
+
+Takes a single row (which is an object)
+Converts it to a JSON string using JSON.stringify()
+Returns the length of that string in bytes
+This is used in the chunking process to ensure each chunk stays under the size limit:
+
+      // currentChunk might look like this:
+      // [
+      //   { id: 1, name: "John", age: 30, city: "New York" },
+      //   { id: 2, name: "Jane", age: 25, city: "Boston" }
+      // ]
+
+current chunk stores the rows as object like basically array of object.
+
+      // Start new chunk with current row if the previous chunk causes the rows to split.
+
+      // Example chunkData might look like:
+      // {
+      //   tableName: "users",
+      //   sampleData: [
+      //     { id: 1, name: "John", age: 30, city: "New York" },
+      //     { id: 2, name: "Jane", age: 25, city: "Boston" }
+      //   ]
+      // }
+the rows are never split,if the chunk size exceeds,then we will start from the same row where we concluded the prvious row to maintai the context.
+
+the chunk data ensures all the rows for a given able is compiled.
+
+
+
+getRowSize doesn't count the number of rows. Instead, it calculates the size (in bytes) of a single row when converted to a string
+
+Takes a single row (which is an object)
+Converts it to a JSON string using JSON.stringify()
+Returns the length of that string in bytes
+This is used in the chunking process to ensure each chunk stays under the size limit:
+
+      // currentChunk might look like this:
+      // [
+      //   { id: 1, name: "John", age: 30, city: "New York" },
+      //   { id: 2, name: "Jane", age: 25, city: "Boston" }
+      // ]
+
+current chunk stores the rows as object like basically array of object.
+
+      // Start new chunk with current row if the previous chunk causes the rows to split.
+
+      // Example chunkData might look like:
+      // {
+      //   tableName: "users",
+      //   sampleData: [
+      //     { id: 1, name: "John", age: 30, city: "New York" },
+      //     { id: 2, name: "Jane", age: 25, city: "Boston" }
+      //   ]
+      // }
+the rows are never split,if the chunk size exceeds,then we will start from the same row where we concluded the prvious row to maintai the context.
+
+the chunk data ensures all the rows for a given able is compiled.
+
+User Input
+    ↓
+TaskManager (decides action)
+    ↓
+Researcher/Inquire (processes request)
+    ↓
+Response
+    ↓
+Background Tasks:
+  - Evaluation
+  - Save to Database
+
+
+  tableChunks [
+  [
+    { table_name: 'User' },
+    { table_name: 'Like' },
+    { table_name: 'Subscription' },
+    { table_name: 'Order' },
+    { table_name: 'ShippingAddress' }
+  ],
+  [
+    { table_name: 'Product' },
+    { table_name: 'Post' },
+    { table_name: 'Comment' }
+  ]
+
+  in tabledata passed to chunktablesdata,we are passing it as array of object where each object is a row
+// Example table.data format
+table.data = [
+  { id: 1, name: "John", email: "john@example.com" },
+  { id: 2, name: "Jane", email: "jane@example.com" },
+  { id: 3, name: "Bob", email: "bob@example.com" }
+]
+
+Generator Function:
+The * makes this a generator function
+Generator functions can pause and resume their execution
+They use yield to return values one at a time
+They maintain their state between yields
+
+
+What is yield?
+yield is like a "pause and return" statement in a generator function
+It allows the function to return a value and pause execution
+When called again, it continues from where it left off
+It's useful for handling large amounts of data without loading everything into memory at once
+
+
+The chunkTableData function is using a simpler, byte-based chunking approach rather than token-based chunking
+
+While it's true that tokens would be more accurate for language model contexts, this function appears to be designed for a simpler use case where:
+Exact token counts aren't critical
+Performance is important (JSON.stringify is faster than token counting)
+The chunking is more approximate/conservative
+
+This token-based version would be more accurate for language model contexts, but it would also be slower due to the token counting overhead. The original byte-based version is a reasonable compromise if exact token counts aren't critical and you want better performance.

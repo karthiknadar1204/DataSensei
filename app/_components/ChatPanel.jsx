@@ -11,6 +11,13 @@ const ChatPanel = React.forwardRef(({ connectionId }, ref) => {
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const messageCounter = React.useRef(0);
+
+  const getUniqueId = () => {
+    messageCounter.current += 1;
+    return `${Date.now()}-${messageCounter.current}`;
+  };
+
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -40,14 +47,14 @@ const ChatPanel = React.forwardRef(({ connectionId }, ref) => {
       const userMessage = submitData.get('input')
       
       const tempUserMessage = {
-        id: Date.now(),
+        id: getUniqueId(),
         message: userMessage,
         type: 'user',
         temporary: true
       }
 
       const tempLoadingMessage = {
-        id: Date.now() + 1,
+        id: getUniqueId(),
         type: 'loading',
         temporary: true
       }
