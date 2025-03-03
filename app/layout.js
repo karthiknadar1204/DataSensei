@@ -9,6 +9,7 @@ import {
 } from '@clerk/nextjs'
 import { AI } from "./actions/chatAction";
 import Image from "next/image";
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
           suppressHydrationWarning={true}
         >
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
