@@ -34,7 +34,7 @@ export default function Hero() {
             Chat With Your Database <span className="text-red-500">Visually</span>
           </h1>
           <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 md:mb-8">
-            Transform your PostgreSQL data into interactive visualizations through natural language conversations
+            Transform your PostgreSQL and MongoDB data into interactive visualizations through natural language conversations
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <SignedOut>

@@ -9,19 +9,27 @@ export default function DatabaseConnection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-2">Connect Your Database</h2>
-          <p className="text-gray-400 text-sm md:text-lg">Simple and secure connection to your PostgreSQL database</p>
+          <p className="text-gray-400 text-sm md:text-lg">Simple and secure connection to your PostgreSQL or MongoDB database</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto items-center">
           <div className="space-y-4 md:space-y-6 w-full">
             <div>
+              <label className="text-white mb-2 block text-sm md:text-lg">Database Type</label>
+              <select className="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 text-sm md:text-lg">
+                <option>PostgreSQL</option>
+                <option>MongoDB</option>
+              </select>
+            </div>
+
+            <div>
               <label className="text-white mb-2 block text-sm md:text-lg">Database URL</label>
               <Input
-                placeholder="postgresql://username:password@host:port/database"
+                placeholder="database://username:password@host:port/database"
                 className="bg-gray-800 border-gray-700 text-white text-sm md:text-lg"
               />
               <p className="text-xs md:text-sm text-gray-500 mt-1">
-                Format: postgresql://username:password@host:port/database
+                Format: postgresql://username:password@host:port/database or mongodb://username:password@host:port/database
               </p>
             </div>
 

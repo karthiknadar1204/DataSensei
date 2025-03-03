@@ -17,7 +17,7 @@ export default function ChatInterface() {
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-2">Chat with Your Data</h2>
           <p className="text-gray-600 text-sm md:text-base">
-            Ask questions about your data in natural language and get instant insights
+            Ask questions about your PostgreSQL or MongoDB data in natural language and get instant insights
           </p>
         </div>
 

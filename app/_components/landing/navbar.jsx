@@ -5,7 +5,7 @@ import Image from "next/image"
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Navbar() {
   const router = useRouter()
@@ -13,15 +13,37 @@ export default function Navbar() {
 
   const navItems = [
     ["Home", "/"],
-    ["Features", "/features"], 
-    ["Connect DB", "/connect"],
-    ["Chat", "/chat"],
-    ["Visualize", "/visualize"],
-    ["Docs", "/docs"],
-    ["Examples", "/examples"],
-    ["Pricing", "/pricing"],
-    ["Contact", "/contact"],
+    ["Features", "#features"], 
+    ["Connect DB", "#connect"],
+    ["Chat", "#chat"],
+    ["Visualize", "#visualize"],
+    ["Pricing", "#pricing"],
+    ["Contact", "#contact"],
   ]
+
+  // Handle smooth scrolling for anchor links
+  const handleNavClick = (e, href) => {
+    // If it's an anchor link (starts with #)
+    if (href.startsWith('#')) {
+      e.preventDefault()
+      
+      const targetId = href.substring(1)
+      const targetElement = document.getElementById(targetId)
+      
+      if (targetElement) {
+        // Close mobile menu if open
+        if (isMenuOpen) {
+          setIsMenuOpen(false)
+        }
+        
+        // Smooth scroll to the element
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
+    }
+  }
 
   return (
     <nav className="w-full bg-white border-b relative">
@@ -56,6 +78,7 @@ export default function Navbar() {
               key={label} 
               href={href} 
               className="text-gray-600 hover:text-gray-900 transition-colors"
+              onClick={(e) => handleNavClick(e, href)}
             >
               {label}
             </Link>
@@ -92,7 +115,10 @@ export default function Navbar() {
                   key={label}
                   href={href}
                   className="text-gray-600 hover:text-gray-900 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    handleNavClick(e, href)
+                    setIsMenuOpen(false)
+                  }}
                 >
                   {label}
                 </Link>

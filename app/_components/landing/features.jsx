@@ -3,9 +3,9 @@ import { LayoutDashboard, MessageSquare, BarChart3, Calculator, Lock, RefreshCw 
 const features = [
   {
     icon: LayoutDashboard,
-    title: "PostgreSQL Integration",
+    title: "Multi-Database Support",
     description:
-      "Seamlessly connect to your PostgreSQL database with a simple URL. Automatic schema detection and data fetching.",
+      "Seamlessly connect to PostgreSQL and MongoDB databases with a simple URL. Automatic schema detection and data fetching.",
   },
   {
     icon: MessageSquare,
@@ -22,18 +22,19 @@ const features = [
     icon: Calculator,
     title: "Advanced Analytics",
     description:
-      "Calculate complex metrics, percentages, and statistics from your data on the fly. Automated insights generation.",
+      "Perform complex calculations and analytics on your data. Aggregate, filter, and transform your data with ease.",
   },
   {
     icon: Lock,
-    title: "Secure Connection",
+    title: "Secure Access",
     description:
-      "Enterprise-grade security for your database connection. Encrypted data transfer and secure authentication.",
+      "Your database credentials are encrypted and never stored. All connections are secure and protected.",
   },
   {
     icon: RefreshCw,
     title: "Real-time Updates",
-    description: "Get live updates as your data changes. Visualizations automatically refresh with new data.",
+    description:
+      "Get real-time updates as your data changes. Visualizations and analytics are always up-to-date.",
   },
 ]
 

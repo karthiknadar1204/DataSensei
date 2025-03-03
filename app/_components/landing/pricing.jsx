@@ -5,21 +5,39 @@ const plans = [
   {
     name: "Starter",
     price: "49",
-    features: ["Up to 5 Database Connections", "100 Queries/day", "Basic Visualizations", "Email Support"],
+    features: [
+      "PostgreSQL & MongoDB Support", 
+      "Up to 5 Database Connections", 
+      "100 Queries/day", 
+      "Basic Visualizations", 
+      "Email Support"
+    ],
     cta: "Get Started",
     popular: false,
   },
   {
     name: "Professional",
     price: "99",
-    features: ["Unlimited Database Connections", "1000 Queries/day", "Advanced Visualizations", "Priority Support"],
+    features: [
+      "PostgreSQL & MongoDB Support", 
+      "Unlimited Database Connections", 
+      "1000 Queries/day", 
+      "Advanced Visualizations", 
+      "Priority Support"
+    ],
     cta: "Start Free Trial",
     popular: true,
   },
   {
     name: "Enterprise",
     price: "Custom",
-    features: ["Custom Database Integration", "Unlimited Queries", "Custom Visualizations", "24/7 Dedicated Support"],
+    features: [
+      "PostgreSQL & MongoDB Support", 
+      "Custom Database Integration", 
+      "Unlimited Queries", 
+      "Custom Visualizations", 
+      "24/7 Dedicated Support"
+    ],
     cta: "Contact Sales",
     popular: false,
   },

@@ -13,12 +13,24 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <Features />
-      <DatabaseConnection />
-      <ChatInterface />
-      <DataVisualization />
-      <Pricing />
-      <Contact/>
+      <section id="features">
+        <Features />
+      </section>
+      <section id="connect">
+        <DatabaseConnection />
+      </section>
+      <section id="chat">
+        <ChatInterface />
+      </section>
+      <section id="visualize">
+        <DataVisualization />
+      </section>
+      <section id="pricing">
+        <Pricing />
+      </section>
+      <section id="contact">
+        <Contact/>
+      </section>
       <Footer />
     </main>
   )
