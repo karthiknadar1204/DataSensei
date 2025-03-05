@@ -22,11 +22,12 @@ const COLORS = [
   '#98FB98'
 ];
 
-const PieChart = ({ data, width = 600, height = 400 }) => {
+const PieChart = ({ data, config }) => {
   if (!data || !data.length) return null;
 
+  // Ensure data has the correct format
   const formattedData = data.map(d => ({
-    name: d.label || d[Object.keys(d)[0]],
+    name: d.label || d.name || d[Object.keys(d)[0]],
     value: Number(d.value || d[Object.keys(d)[1]]) || 0
   }));
 
@@ -60,7 +61,7 @@ const PieChart = ({ data, width = 600, height = 400 }) => {
             innerRadius={60}
             outerRadius={140}
             paddingAngle={2}
-            label={(entry) => `${entry.name} (${((entry.value / total) * 100).toFixed(1)}%)`}
+            label={entry => `${entry.name} (${((entry.value / total) * 100).toFixed(1)}%)`}
           >
             {formattedData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
