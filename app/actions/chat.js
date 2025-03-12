@@ -7,6 +7,8 @@ import { db } from "@/configs/db";
 import { eq, and } from "drizzle-orm";
 import { chats, dbConnections } from "@/configs/schema";
 import { chunkTableData } from "@/lib/utils/tokenManagement";
+import Instructor from "@instructor-ai/instructor";
+import { QueryEmbeddingsSchema } from "@/lib/schemas/embeddingSchemas";
 
 const CHUNK_SIZE = 4000;
 
@@ -131,11 +133,19 @@ export async function getDbData(id) {
 }
 
 export async function getQueryEmbeddings(message, connectionId) {
+  // Create standard OpenAI client
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
   });
+  
+  // Create Instructor-enhanced client
+  const instructorClient = Instructor({
+    client: openai,
+    mode: "FUNCTIONS"
+  });
 
   try {
+    // Generate embeddings (this part remains unchanged)
     const questionEmbedding = await openai.embeddings.create({
       model: "text-embedding-ada-002",
       input: message
@@ -156,6 +166,7 @@ export async function getQueryEmbeddings(message, connectionId) {
       .map(m => m.metadata?.data)
       .filter(Boolean);
 
+    // Parse schema information
     let parsedSchema = [];
     try {
       parsedSchema = schemaInfo ? JSON.parse(schemaInfo) : [];
@@ -167,6 +178,7 @@ export async function getQueryEmbeddings(message, connectionId) {
       parsedSchema = [];
     }
 
+    // Parse data information
     let parsedData = [];
     try {
       const combinedData = dataInfo.map(info => {
@@ -186,10 +198,23 @@ export async function getQueryEmbeddings(message, connectionId) {
       parsedData = [];
     }
 
-    return {
+    // Create the result object
+    const result = {
       schema: parsedSchema,
       sampleData: parsedData
     };
+
+    // Validate the result against the schema
+    try {
+      // This will throw an error if validation fails
+      return QueryEmbeddingsSchema.parse(result);
+    } catch (validationError) {
+      console.error('Schema validation error:', validationError);
+      
+      // If validation fails, return the original result
+      // This ensures backward compatibility
+      return result;
+    }
   } catch (error) {
     console.error("Error getting embeddings:", error);
     throw error;

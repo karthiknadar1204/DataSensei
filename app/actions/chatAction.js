@@ -137,25 +137,27 @@ export async function submitChat(formData) {
 
     const isDirectQuery = userInput.toLowerCase().match(/^(how many|what|who|tell me|show|list|count|get|find)/i);
     
-    
     if (taskAction.next === 'inquire' && isDirectQuery) {
-
       const researchResult = await researcher([
         { role: 'system', content: databaseContext },
         ...chatHistory,
         { role: 'user', content: userInput }
       ]);
 
+      // Ensure the response is in the correct format
       response = { 
         type: 'analysis',
         data: researchResult 
       };
     } else if (taskAction.next === 'inquire') {
-      response = await inquire([
+      const inquireResult = await inquire([
         { role: 'system', content: databaseContext },
         ...chatHistory,
         { role: 'user', content: userInput }
       ]);
+
+      // Ensure the response is in the correct format
+      response = inquireResult;
     } else {
       const isVisualization = taskAction.next === 'visualize';
       const researchResult = await researcher([
@@ -164,12 +166,12 @@ export async function submitChat(formData) {
         { role: 'user', content: userInput }
       ]);
 
+      // Ensure the response is in the correct format
       response = { 
         type: isVisualization ? 'visualization' : 'analysis',
         data: researchResult 
       };
     }
-
 
     runInBackground(async () => {
       await Promise.all([
