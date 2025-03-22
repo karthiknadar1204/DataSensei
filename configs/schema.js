@@ -33,6 +33,19 @@ export const dbConnections = pgTable('db_connections', {
   userIdIdx: index('user_id_idx').on(table.userId)
 }))
 
+export const tableSyncStatus = pgTable('table_sync_status', {
+  id: serial('id').primaryKey(),
+  connectionId: integer('connection_id').references(() => dbConnections.id).notNull(),
+  tableName: varchar('table_name', { length: 256 }).notNull(),
+  lastSyncTimestamp: timestamp('last_sync_timestamp').notNull(),
+  lastSyncRowCount: integer('last_sync_row_count').notNull(),
+  dbType: varchar('db_type', { length: 50 }).notNull(), // 'postgresql' or 'mongodb'
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  connectionTableIdx: index('connection_table_idx').on(table.connectionId, table.tableName)
+}));
+
 export const chatsRelations = relations(chats, ({ one }) => ({
   user: one(users, {
     fields: [chats.userId],
