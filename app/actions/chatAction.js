@@ -137,7 +137,14 @@ export async function submitChat(formData) {
 
     const isDirectQuery = userInput.toLowerCase().match(/^(how many|what|who|tell me|show|list|count|get|find)/i);
     
-    if (taskAction.next === 'inquire' && isDirectQuery) {
+    // Check if it's an SQL query request
+    const isSqlRequest = userInput.toLowerCase().includes('sql query') || 
+                        userInput.toLowerCase().includes('write sql') || 
+                        userInput.toLowerCase().includes('generate sql') ||
+                        userInput.toLowerCase().includes('sql statement') ||
+                        userInput.toLowerCase().includes('sql code');
+
+    if (isSqlRequest) {
       const researchResult = await researcher([
         { role: 'system', content: databaseContext },
         ...chatHistory,
@@ -147,7 +154,21 @@ export async function submitChat(formData) {
       // Ensure the response is in the correct format
       response = { 
         type: 'analysis',
-        data: researchResult 
+        data: researchResult,
+        sqlQuery: researchResult.sqlQuery
+      };
+    } else if (taskAction.next === 'inquire' && isDirectQuery) {
+      const researchResult = await researcher([
+        { role: 'system', content: databaseContext },
+        ...chatHistory,
+        { role: 'user', content: userInput }
+      ]);
+
+      // Ensure the response is in the correct format
+      response = { 
+        type: 'analysis',
+        data: researchResult,
+        sqlQuery: researchResult.sqlQuery
       };
     } else if (taskAction.next === 'inquire') {
       const inquireResult = await inquire([
@@ -169,7 +190,8 @@ export async function submitChat(formData) {
       // Ensure the response is in the correct format
       response = { 
         type: isVisualization ? 'visualization' : 'analysis',
-        data: researchResult 
+        data: researchResult,
+        sqlQuery: researchResult.sqlQuery
       };
     }
 
