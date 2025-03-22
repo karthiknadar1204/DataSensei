@@ -34,6 +34,20 @@ export async function POST(request) {
       })))
     }).returning();
 
+    // Record initial sync status for each collection
+    const syncPromises = allCollectionData.map(collection => 
+      db.insert(tableSyncStatus).values({
+        connectionId: newConnection.id,
+        tableName: collection.collectionName,
+        lastSyncTimestamp: new Date(),
+        lastSyncRowCount: collection.data.length,
+        dbType: 'mongodb',
+      })
+    );
+
+    await Promise.all(syncPromises);
+    console.log('Initial sync status recorded for all collections');
+
     return NextResponse.json({ 
       id: newConnection.id,
       tables: allCollectionData 
