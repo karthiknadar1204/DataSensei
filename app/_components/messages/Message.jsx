@@ -7,6 +7,7 @@ import { VisualizationMessage } from './VisualizationMessage'
 import { UserButton } from '@clerk/nextjs'
 import { Bot } from 'lucide-react'
 import { ClarificationMessage } from './ClarificationMessage'
+import SqlQueryDisplay from '../SqlQueryDisplay'
 
 const Message = ({ message, onSubmit, isLoading }) => {
   if (message.type === 'loading') {
@@ -52,6 +53,9 @@ const Message = ({ message, onSubmit, isLoading }) => {
   console.log("message", message)
   console.log("response.data?.visualization?.data", parsedResponse.data?.visualization?.data)
 
+  // Check for SQL query in the response
+  const sqlQuery = parsedResponse.sqlQuery || parsedResponse.data?.sqlQuery
+
   return (
     <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto animate-fadeIn">
       <div className="flex justify-end items-start gap-3">
@@ -73,7 +77,10 @@ const Message = ({ message, onSubmit, isLoading }) => {
           ) : messageType === 'visualization' ? (
             <VisualizationMessage response={parsedResponse} />
           ) : messageType === 'analysis' ? (
-            <AnalysisMessage response={parsedResponse} />
+            <>
+              <AnalysisMessage response={parsedResponse} />
+              {sqlQuery && <SqlQueryDisplay sqlQuery={sqlQuery} />}
+            </>
           ) : (
             <div className="bg-white rounded-2xl rounded-tl-sm p-4 max-w-[80%] shadow-sm border border-gray-100">
               <p className="text-sm text-gray-800 whitespace-pre-wrap">
